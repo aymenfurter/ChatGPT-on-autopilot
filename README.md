@@ -3,7 +3,7 @@ Handing a shell to ChatGPT - What could possible go wrong?
 
 With ChatGPT-on-autopilot (using the GPT-4 model), ChatGPT is able to autonomously and iteratively work on a problem statement using a Linux shell.
 
-# Example run
+## Example run
 
 OpenAI:
 ```

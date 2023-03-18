@@ -1,44 +1,46 @@
 import subprocess
 import hashlib
 from flask import Flask, request, jsonify
+from flask_cors import CORS
+import secrets
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
-# Generate a random hash on startup
-app.secret_key = hashlib.sha256(b'some_random_salt').hexdigest()
-
-# Store the shell output in a list
+salt = secrets.token_urlsafe(16)
+app.secret_key = hashlib.sha256(salt.encode()).hexdigest()
+print(f"Secret key: {app.secret_key}")
 output_list = []
 
 @app.route('/execute', methods=['POST'])
 def execute_command():
-    # Get the hash from the request headers
-    client_hash = request.headers.get('X-App-Hash')
-
-    # Verify that the hash matches the server hash
+    client_hash = request.form.get('auth')
+    command = request.form['command']
+    
     if client_hash != app.secret_key:
         return 'Unauthorized', 401
+    
+    # Store the shell output in a list
+    output_list = []
+    output_list.append("$ " + command)
+    ps = subprocess.Popen(command,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    result = ps.communicate()[0]
 
-    # Execute the command
-    command = request.form['command']
-    result = subprocess.check_output(command.split())
-
-    # Add the command output to the output list
-    output_list.append(result)
+    resultAsString = result.decode("utf-8")
+    output_list.append(resultAsString)
 
     return result
 
 @app.route('/output', methods=['GET'])
 def get_output():
-    # Get the hash from the request headers
-    client_hash = request.headers.get('X-App-Hash')
+    client_hash = request.args.get('auth')
 
-    # Verify that the hash matches the server hash
     if client_hash != app.secret_key:
         return 'Unauthorized', 401
 
-    # Return the output list as JSON
-    return jsonify(output_list)
+    output_string = '\n'.join(output_list)
+
+    return output_string
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

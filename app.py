@@ -23,7 +23,7 @@ def execute_command():
     # Store the shell output in a list
     output_list = []
     output_list.append("$ " + command)
-    ps = subprocess.Popen(command,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    ps = subprocess.Popen(command,cwd="/tmp", shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     result = ps.communicate()[0]
 
     resultAsString = result.decode("utf-8")

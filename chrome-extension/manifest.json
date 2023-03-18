@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "OpenAI Chat Extension",
+  "version": "1.0",
+  "permissions": [
+    "activeTab",
+    "https://chat.openai.com/*",
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://chat.openai.com/chat*"],
+      "js": ["content.js"]
+    }
+  ],
+  "options_page": "options.html",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  }
+}

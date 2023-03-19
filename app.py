@@ -16,6 +16,7 @@ output_list = []
 def execute_command():
     client_hash = request.form.get('auth')
     command = request.form['command']
+    command = request.form['command'].replace('\r', '')
     
     if client_hash != app.secret_key:
         return 'Unauthorized', 401

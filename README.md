@@ -1,8 +1,6 @@
 # ChatGPT - Full Self Coding
 
-Handing a shell to ChatGPT - What could possible go wrong? ChatGPT is able to autonomously and iteratively work on a problem statement using a Linux shell.
-
-This repository includes both the server-side code (written in Python) and the Chrome extension (to enable ChatGPT's autopilot mode).
+See: https://aymen-furter.medium.com/a-shell-is-all-you-need-705e6918f3df
 
 ## Example run
 

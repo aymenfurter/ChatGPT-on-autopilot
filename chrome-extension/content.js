@@ -5,6 +5,8 @@ function getValidMessage(markdown) {
   try {
     $(".markdown .items-center").remove();
   } catch (err) {}
+  markdown.innerHTML = markdown.innerHTML.replaceAll("<code>", "\"");
+  markdown.innerHTML = markdown.innerHTML.replaceAll("</code>", "\"");
   const strippedContent = markdown.textContent.replace(/<\/?[^>]+(>|$)/g, '');
   console.log("Stripped content: " + strippedContent);
   if (strippedContent.endsWith('Finish[]') || strippedContent.endsWith(']')) {
